@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>simple-aws-java-lambda</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <groupId>uk.co.melia</groupId>
+    <packaging>jar</packaging>
+    <name>simple-aws-java-lambda</name>
+    <description>Simple AWS Java Lambda</description>
+    <properties>
+    	<java.version>17</java.version>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.source>${java.version}</maven.compiler.source>    	
+		<aws-lambda-java-runtime-interface-client.version>2.1.0</aws-lambda-java-runtime-interface-client.version>
+    </properties>
+    <dependencies>      
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-runtime-interface-client</artifactId>
+			<version>${aws-lambda-java-runtime-interface-client.version}</version>
+		</dependency>   
+    </dependencies>
+    <build>
+        <finalName>function</finalName>
+        <plugins>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<configuration>
+					<includeScope>compile</includeScope>
+					<includeScope>runtime</includeScope>					
+				</configuration>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>     
+        </plugins>
+    </build>
+</project>

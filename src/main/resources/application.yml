@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: fx-rate-producer
+  config:
+    import:
+      - 'classpath:common.yml'    
+  cloud:
+    stream:
+      bindings:
+        fxRates-out-0:
+          destination: fx-rate-events
+          producer:
+            use-native-encoding: true
+      function:
+        autodetect: false
+      kafka:
+        binder:
+          requiredAcks: all
+        bindings:
+          fxRates-out-0:
+            producer:
+              configuration:
+                batch:
+                  size: 512
+                compression:
+                  type: zstd
+                key:
+                  serializer: org.apache.kafka.common.serialization.StringSerializer
+                value:
+                  serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+              sync: true
+      source: fxRates
+jhc:
+  exchange:
+    rate:
+      delay:
+        ms: 5000
+      max:
+        attempts: 3    
+uk:
+  co:
+    ii:
+      fxrate:
+        producer:
+          currencies: USD,GBP,CAD,EUR,HKD,SGD,AUD,SEK,CHF,JPY,NOK,DKK,ZAR,THB,PLN,ILS,NZD,CLP
+          jhc-api-version: ${uk.co.ii.jhc-api-version}
+          jhc-api-base-url: ${uk.co.ii.jhc-api-base-url}/${uk.co.ii.fxrate.producer.jhc-api-version}
+          jhc-api-password: ${uk.co.ii.jhc-api-password}
+          jhc-api-username: ${uk.co.ii.jhc-api-username}
+          jhc-exchange-rate-url: ${uk.co.ii.fxrate.producer.jhc-api-base-url}/exchange-rate/
